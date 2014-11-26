@@ -1,7 +1,7 @@
 Laptop
 ======
 
-Laptop is a script to set up an OS X laptop for Rails development.
+Laptop is a script to set up an OS X laptop for Rally project development.
 
 Requirements
 ------------
@@ -19,7 +19,7 @@ Install
 
 Read, then run the script:
 
-    bash <(curl -s https://raw.githubusercontent.com/thoughtbot/laptop/master/mac) 2>&1 | tee ~/laptop.log
+    bash <(curl -s https://raw.githubusercontent.com/sxalexander/laptop/master/mac) 2>&1 | tee ~/laptop.log
 
 Debugging
 ---------
@@ -36,7 +36,6 @@ What it sets up
 * [Bundler] for managing Ruby libraries
 * [Exuberant Ctags] for indexing files for vim tab completion
 * [Foreman] for serving Rails apps locally
-* [gh] for interacting with the GitHub API
 * [Heroku Config] for local `ENV` variables
 * [Heroku Toolbelt] for interacting with the Heroku API
 * [Homebrew] for managing operating system libraries
@@ -49,10 +48,7 @@ What it sets up
 * [Rails] gem for writing web applications
 * [Rbenv] for managing versions of Ruby
 * [Redis] for storing key-value data
-* [Ruby Build] for installing Rubies
-* [Ruby] stable for writing general-purpose code
 * [The Silver Searcher] for finding things in files
-* [Tmux] for saving project state and switching between projects
 * [Watch] for periodically executing a program and displaying the output
 * [Zsh] as your shell
 
