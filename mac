@@ -41,10 +41,39 @@ fi
 
 append_to_zshrc 'export PATH="$HOME/.bin:$PATH"'
 
+append_to_zshrc 'export HOMEBREW_CASK_OPTS="--appdir=/Applications"'
+
 if [[ "$SHELL" != */zsh ]]; then
+
+  brew_install_or_upgrade 'zsh'
+  brew_install_or_upgrade 'zsh-completions'
+
   fancy_echo "Changing your shell to zsh ..."
     chsh -s $(which zsh)
 fi
+
+
+brew_cask_install_or_upgrade(){
+  if brew_cask_is_installed "$1"; then
+    fancy_echo "Updating $1..."
+    brew cask update "$@"
+  else
+    fancy_echo "Installing $1..."
+    brew cask install "$@"
+  fi
+}
+
+brew_cask_is_installed() {
+  local name="$(brew_cask_expand_alias "$1")"
+
+  fancy_echo "$name"
+  brew cask list -1 | grep -Fqx "$name"
+}
+
+brew_cask_expand_alias() {
+  brew cask info "$1" 2>/dev/null | head -1 | awk '{gsub(/:/, ""); print $1}'
+}
+
 
 brew_install_or_upgrade() {
   if brew_is_installed "$1"; then
@@ -111,14 +140,14 @@ fancy_echo "Installing Redis, a good key-value database ..."
 fancy_echo "Installing The Silver Searcher (better than ack or grep) to search the contents of files ..."
   brew_install_or_upgrade 'the_silver_searcher'
 
+fancy_echo "Installing wget to download remote files ..."
+  brew_install_or_upgrade 'the_silver_searcher'
+
 fancy_echo "Installing vim from Homebrew to get the latest version ..."
   brew_install_or_upgrade 'vim'
 
 fancy_echo "Installing ctags, to index files for vim tab completion of methods, classes, variables ..."
   brew_install_or_upgrade 'ctags'
-
-fancy_echo "Installing reattach-to-user-namespace, for copy-paste and RubyMotion compatibility with tmux ..."
-  brew_install_or_upgrade 'reattach-to-user-namespace'
 
 fancy_echo "Installing ImageMagick, to crop and resize images ..."
   brew_install_or_upgrade 'imagemagick'
@@ -133,12 +162,25 @@ fancy_echo "Installing cask, for installing desktop applications from homebrew .
   brew tap caskroom/cask
   brew_install_or_upgrade 'brew-cask'
 
-  brew cask install google-chrome
+fancy_echo "Installing Vagrant, for managing local virtual machines ..."
+  brew_cask_install_or_upgrade vagrant
 
-fancy_echo "Installing Vagrant, for managing local environments ..."
-  brew_install_or_upgrade 'vagrant'
+fancy_echo "Installing Virtualbox, for storing local virtual machines ..."
+  brew_cask_install_or_upgrade virtualbox
 
-node_version="0.10"
+fancy_echo "Installing Hipchat, for chatty-chatting ..."
+  brew_cask_install_or_upgrade hipchat
+
+fancy_echo "Installing Evernote, for note taking & sharing ..."
+  brew_cask_install_or_upgrade evernote
+
+fancy_echo "Installing Sequal Pro, for MySQL database management ..."
+  brew_cask_install_or_upgrade sequel-pro
+
+fancy_echo "Installing Box Sync, for file syncing and management ..."
+  brew_cask_install_or_upgrade box-sync
+
+node_version="0.10.33"
 
 fancy_echo "Installing NVM, Node.js, and NPM, for running apps and installing JavaScript packages ..."
   brew_install_or_upgrade 'nvm'
@@ -159,8 +201,12 @@ fancy_echo "Upgrading and linking OpenSSL ..."
 fancy_echo "Installing Python..."
   brew_install_or_upgrade 'python'
 
-fancy_echo "Installing fabric for managing projects and environments ..."
+fancy_echo "Installing Fabric for managing projects and environments ..."
   pip install fabric
+
+fancy_echo "Installing Virtualenv for handling python environments ..."
+  pip install virtualenv virtualenvwrapper
+
 
 fancy_echo "Adding grunt for automated build tasks ..."
   npm install -g grunt-cli
